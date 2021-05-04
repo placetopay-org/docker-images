@@ -6,7 +6,7 @@ ENV NEWRELIC_SHA 8996fb6ace3d482712603b9201de64c88d53e586609b1f47fa24b1adadf7067
 
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
 RUN curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_NAME}.tar.gz" | tar -C /tmp -zx
-RUN echo "$NEWRELIC_SHA  $NEWRELIC_NAME.tar.gz" | sha256sum -c
+RUN echo "$NEWRELIC_SHA  /tmp/$NEWRELIC_NAME.tar.gz" | sha256sum -c
 RUN export NR_INSTALL_USE_CP_NOT_LN=1
 RUN export NR_INSTALL_SILENT=1
 RUN /tmp/${NEWRELIC_NAME}/newrelic-install install
