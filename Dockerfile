@@ -21,7 +21,3 @@ RUN echo "loglevel=error" > /usr/local/etc/newrelic/newrelic.cfg
 RUN echo "logfile=/dev/null" >> /usr/local/etc/newrelic/newrelic.cfg
 
 COPY . /var/task
-
-USER root
-RUN chmod +x /var/task/entrypoint.sh
-ENTRYPOINT ["/var/task/entrypoint.sh"]
