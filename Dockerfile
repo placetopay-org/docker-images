@@ -19,5 +19,3 @@ RUN rm /usr/local/etc/php/conf.d/newrelic.ini
 RUN mkdir -p /usr/local/etc/newrelic
 RUN echo "loglevel=error" > /usr/local/etc/newrelic/newrelic.cfg
 RUN echo "logfile=/dev/null" >> /usr/local/etc/newrelic/newrelic.cfg
-
-ENTRYPOINT []
