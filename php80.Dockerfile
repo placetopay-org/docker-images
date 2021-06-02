@@ -1,9 +1,5 @@
 FROM laravelphp/vapor:php80
 
-RUN pecl install pcov
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN apk add --no-cache git
-
 ENV NEWRELIC_VERSION 9.17.1.301
 ENV NEWRELIC_NAME newrelic-php5-${NEWRELIC_VERSION}-linux-musl
 
