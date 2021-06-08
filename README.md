@@ -10,11 +10,13 @@ These instructions will give you some containers on your local machine available
 
 [build.sh](build.sh) is a script with docker commands to make the process easier.
 
-To build an image (you can change 74 by 80 for php 8):
+To build an image:
 
 ```
 ./build.sh php74
 ```
+
+__Note:__ There are images with php 8 for production (php80) and for pipelines (php80-pipeline).
 
 To build and publish an image:
 
