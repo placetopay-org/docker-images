@@ -1,13 +1,13 @@
 FROM laravelphp/vapor:php81
 
-ENV NEWRELIC_VERSION 9.20.0.310
-ENV NEWRELIC_NAME newrelic-php5-${NEWRELIC_VERSION}-linux-musl
-
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
-RUN curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_NAME}.tar.gz" | tar -C /tmp -zx
-RUN export NR_INSTALL_USE_CP_NOT_LN=1
-RUN export NR_INSTALL_SILENT=1
-RUN /tmp/${NEWRELIC_NAME}/newrelic-install install
+RUN set -eux \
+  && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" | grep -o 'newrelic-php5-\(\d\+.\)\+-linux-musl.tar.gz' | head -n 1` || exit; \
+  curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_FILE}" | tar -C /tmp -zx \
+  && NEWRELIC_FOLDER=`echo $NEWRELIC_FILE | sed -E 's/.tar.gz//g'` \
+  && export NR_INSTALL_USE_CP_NOT_LN=1 \
+  && export NR_INSTALL_SILENT=1 \
+  && /tmp/${NEWRELIC_FOLDER}/newrelic-install install
 
 RUN echo 'extension = "newrelic.so"' >> /usr/local/etc/php/php.ini
 RUN echo 'newrelic.logfile = "/dev/null"' >> /usr/local/etc/php/php.ini
