@@ -4,7 +4,6 @@ FROM laravelphp/vapor:php81
 RUN set -eux \
   && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" | grep -o 'newrelic-php5-\(\d\+.\)\+-linux-musl.tar.gz' | head -n 1` || exit; \
   curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_FILE}" | tar -C /tmp -zx \
-  && NEWRELIC_FOLDER=`echo $NEWRELIC_FILE | sed -E 's/.tar.gz//g'` \
   && export NR_INSTALL_USE_CP_NOT_LN=1 \
   && export NR_INSTALL_SILENT=1 \
   && /tmp/newrelic-php5-*/newrelic-install install
