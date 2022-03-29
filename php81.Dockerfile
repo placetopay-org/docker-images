@@ -7,7 +7,7 @@ RUN set -eux \
   && NEWRELIC_FOLDER=`echo $NEWRELIC_FILE | sed -E 's/.tar.gz//g'` \
   && export NR_INSTALL_USE_CP_NOT_LN=1 \
   && export NR_INSTALL_SILENT=1 \
-  && /tmp/${NEWRELIC_FOLDER}/newrelic-install install
+  && /tmp/newrelic-php5-*/newrelic-install install
 
 RUN echo 'extension = "newrelic.so"' >> /usr/local/etc/php/php.ini
 RUN echo 'newrelic.logfile = "/dev/null"' >> /usr/local/etc/php/php.ini
@@ -20,7 +20,7 @@ RUN mkdir -p /usr/local/etc/newrelic
 RUN echo "loglevel=error" > /usr/local/etc/newrelic/newrelic.cfg
 RUN echo "logfile=/dev/null" >> /usr/local/etc/newrelic/newrelic.cfg
 
-COPY . /var/task
+ADD entrypoint.sh /var/task/entrypoint.sh
 
 USER root
 RUN chmod +x /var/task/entrypoint.sh
