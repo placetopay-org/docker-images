@@ -1,13 +1,12 @@
 FROM laravelphp/vapor:php80
 
-ENV NEWRELIC_VERSION 9.17.1.301
-ENV NEWRELIC_NAME newrelic-php5-${NEWRELIC_VERSION}-linux-musl
-
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
-RUN curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_NAME}.tar.gz" | tar -C /tmp -zx
-RUN export NR_INSTALL_USE_CP_NOT_LN=1
-RUN export NR_INSTALL_SILENT=1
-RUN /tmp/${NEWRELIC_NAME}/newrelic-install install
+RUN set -eux \
+  && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" | grep -o 'newrelic-php5-\(\d\+.\)\+-linux-musl.tar.gz' | head -n 1` || exit; \
+  curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_FILE}" | tar -C /tmp -zx \
+  && export NR_INSTALL_USE_CP_NOT_LN=1 \
+  && export NR_INSTALL_SILENT=1 \
+  && /tmp/newrelic-php5-*/newrelic-install install
 
 RUN echo 'extension = "newrelic.so"' >> /usr/local/etc/php/php.ini
 RUN echo 'newrelic.logfile = "/dev/null"' >> /usr/local/etc/php/php.ini
@@ -20,7 +19,7 @@ RUN mkdir -p /usr/local/etc/newrelic
 RUN echo "loglevel=error" > /usr/local/etc/newrelic/newrelic.cfg
 RUN echo "logfile=/dev/null" >> /usr/local/etc/newrelic/newrelic.cfg
 
-COPY . /var/task
+ADD entrypoint.sh /var/task/entrypoint.sh
 
 USER root
 RUN chmod +x /var/task/entrypoint.sh
