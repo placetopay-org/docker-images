@@ -1,4 +1,4 @@
-# Placetopay - Docker Vapor PHP
+# Placetopay - Docker Images
 
 Custom docker images with [Newrelic](https://newrelic.com/) for php 7.4 and php 8.
 
@@ -10,15 +10,15 @@ These instructions will give you some containers on your local machine available
 
 [build.sh](build.sh) is a script with docker commands to make the process easier.
 
-To build an image:
+Build an image:
 
 ```
 ./build.sh php74
 ```
 
-__Note:__ There are images with php 8 for production (php80) and for pipelines (php80-pipeline).
+__Note: There are images with php 8 for production (php80) and for pipelines (php80-pipeline).__
 
-To build and publish an image:
+Build and publish an image:
 
 ```
 ./build.sh php74 -p
