@@ -1,44 +1,30 @@
 #!/bin/bash
 
 PHP_VERSION=$1
-PUBLISH=$2
+PUSH=$2
 
-docker build -f ${PWD}/${PHP_VERSION}.Dockerfile -t vapor-${PHP_VERSION}:latest .
-
-docker tag vapor-${PHP_VERSION}:latest placetopay/php-vapor:${PHP_VERSION}
-
-if [ -n "$PUBLISH" ]; then
-  docker push placetopay/php-vapor:${PHP_VERSION}
+if [ -z "$PHP_VERSION" ]; then
+  echo "Provide an image to build, options are:"
+  echo "php74"
+  echo "php80"
+  echo "php80-pipeline"
+  echo "php81"
+  echo "php81-pipeline"
+  exit
 fi
 
+echo "Running build for $PHP_VERSION"
+docker build -t vapor-${PHP_VERSION}:latest ${PHP_VERSION}
 
+if [ $? -ne 0 ]; then
+  echo "We have error - build failed!"
+  exit $?
+fi
 
+echo "Tagging the version as latest"
+docker tag vapor-${PHP_VERSION}:latest placetopay/php-vapor:${PHP_VERSION}
 
-
-#!/bin/bash
-
-helpFunction()
-{
-   echo "Usage: $0 -a action"
-   echo -e "\t-a put In case that you want to upload the files, add -s if Sura was processed"
-   echo -e "\t-s Does upload into Sura"
-   exit 1
-}
-
-while getopts "p:" opt
-do
-   case "$opt" in
-      p ) push="$OPTARG" ;;
-      ? ) helpFunction ;;
-   esac
-done
-
-echo "Running process $action"
-
-if [[ ! -z "$push" ]]; then
-
-  echo "Cleaning remaining processed files"
-  mv csv_process/output/* csv_process/input/* axa/
-  echo "Cleaning finished"
-
+if [[ ! -z "$PUSH" ]]; then
+  echo "Pushing image to DockerHub"
+  docker push placetopay/php-vapor:${PHP_VERSION}
 fi
