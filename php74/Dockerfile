@@ -1,5 +1,7 @@
 FROM laravelphp/vapor:php74
 
+RUN apk add --no-cache tzdata
+
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
 RUN set -eux \
   && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" | grep -o 'newrelic-php5-\(\d\+.\)\+-linux-musl.tar.gz' | head -n 1` || exit; \
