@@ -1,6 +1,7 @@
 FROM laravelphp/vapor:php80
 
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata git
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
 RUN set -eux \
