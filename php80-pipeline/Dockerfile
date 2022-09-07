@@ -1,6 +1,6 @@
 FROM laravelphp/vapor:php80
 
-RUN apk add --no-cache tzdata
+RUN apk del icu-data-en && apk add icu-data-full
 
 RUN pecl install pcov && \
     docker-php-ext-enable pcov
