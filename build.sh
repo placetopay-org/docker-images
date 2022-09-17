@@ -3,6 +3,7 @@
 PHP_IMAGE=$1
 PHP_VERSION=$2
 PUSH=$3
+PUSH_TAG=$4
 
 if [ -z "$PHP_IMAGE" ]; then
   echo "Provide an image to build, options are:"
@@ -23,6 +24,10 @@ if [ -z "$PHP_VERSION" ]; then
   exit
 fi
 
+if [ -z "$PUSH_TAG" ]; then
+  PUSH_TAG=$PHP_VERSION
+fi
+
 echo "Running build for $PHP_VERSION"
 docker build -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
 
@@ -32,9 +37,9 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Tagging the version as latest"
-docker tag ${PHP_IMAGE}-${PHP_VERSION}:latest placetopay/${PHP_IMAGE}:${PHP_VERSION}
+docker tag ${PHP_IMAGE}-${PHP_VERSION}:latest placetopay/${PHP_IMAGE}:${PUSH_TAG}
 
 if [[ ! -z "$PUSH" ]]; then
   echo "Pushing image to DockerHub"
-  docker push placetopay/${PHP_IMAGE}:${PHP_VERSION}
+  docker push placetopay/${PHP_IMAGE}:${PUSH_TAG}
 fi
