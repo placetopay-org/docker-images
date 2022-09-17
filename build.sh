@@ -1,20 +1,30 @@
 #!/bin/bash
 
-PHP_VERSION=$1
-PUSH=$2
+PHP_IMAGE=$1
+PHP_VERSION=$2
+PUSH=$3
+
+if [ -z "$PHP_IMAGE" ]; then
+  echo "Provide an image to build, options are:"
+  echo -e "\tphp-vapor"
+  echo -e "\tphp-image"
+  echo -e "Example\n\t./build.sh php-vapor php74 -p"
+  exit
+fi
 
 if [ -z "$PHP_VERSION" ]; then
-  echo "Provide an image to build, options are:"
-  echo "php74"
-  echo "php80"
-  echo "php80-pipeline"
-  echo "php81"
-  echo "php81-pipeline"
+  echo "Provide a version to build, options are:"
+  echo -e "\tphp74"
+  echo -e "\tphp80"
+  echo -e "\tphp80-pipeline"
+  echo -e "\tphp81"
+  echo -e "\tphp81-pipeline"
+  echo -e "Example\n\t./build.sh php-vapor php74 -p"
   exit
 fi
 
 echo "Running build for $PHP_VERSION"
-docker build -t vapor-${PHP_VERSION}:latest ${PHP_VERSION}
+docker build -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
 
 if [ $? -ne 0 ]; then
   echo "We have error - build failed!"
@@ -22,9 +32,9 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Tagging the version as latest"
-docker tag vapor-${PHP_VERSION}:latest placetopay/php-vapor:${PHP_VERSION}
+docker tag ${PHP_IMAGE}-${PHP_VERSION}:latest placetopay/${PHP_IMAGE}:${PHP_VERSION}
 
 if [[ ! -z "$PUSH" ]]; then
   echo "Pushing image to DockerHub"
-  docker push placetopay/php-vapor:${PHP_VERSION}
+  docker push placetopay/${PHP_IMAGE}:${PHP_VERSION}
 fi
