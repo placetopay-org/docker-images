@@ -13,7 +13,7 @@ These instructions will give you some containers on your local machine available
 Build an image:
 
 ```
-./build.sh php74
+./build.sh php-vapor php74
 ```
 
 __Note: There are images with php 8 for production (php80) and for pipelines (php80-pipeline).__
@@ -21,7 +21,7 @@ __Note: There are images with php 8 for production (php80) and for pipelines (ph
 Build and publish an image:
 
 ```
-./build.sh php74 -p
+./build.sh php-vapor php74 -p
 ```
 
 __Note:__ You need to be logged in docker hub to publish with `docker login` in the placetopay account.
