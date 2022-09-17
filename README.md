@@ -16,6 +16,12 @@ Build an image:
 ./build.sh php-vapor php74
 ```
 
+Override the tag to push:
+
+```
+./build.sh php-image php74 -p latest
+```
+
 __Note: There are images with php 8 for production (php80) and for pipelines (php80-pipeline).__
 
 Build and publish an image:
