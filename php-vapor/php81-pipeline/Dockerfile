@@ -13,7 +13,6 @@ RUN apk --update add gmp-dev && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Review mysql-client and gnupg1
 RUN apk add --no-cache git mysql-client gnupg
 
 
