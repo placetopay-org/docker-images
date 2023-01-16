@@ -1,6 +1,14 @@
 FROM laravelphp/vapor:php81
 
-RUN apk add --no-cache tzdata
+RUN apk del icu-data-en
+RUN apk add --no-cache tzdata git icu-data-full
+
+
+# Added for better RSA encryption/decryption
+RUN apk --update add gmp-dev && \
+    docker-php-ext-install gmp
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
 RUN set -eux \
