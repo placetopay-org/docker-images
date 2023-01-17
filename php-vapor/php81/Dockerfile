@@ -10,6 +10,9 @@ RUN apk --update add gmp-dev && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN apk add --no-cache git mysql-client
+RUN apk add gnupg1 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/community/
+
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
 RUN set -eux \
   && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" | grep -o 'newrelic-php5-\(\d\+.\)\+-linux-musl.tar.gz' | head -n 1` || exit; \
