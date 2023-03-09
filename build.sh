@@ -19,6 +19,7 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp80"
   echo -e "\tphp80-pipeline"
   echo -e "\tphp81"
+  echo -e "\tphp81-cloudhsm"
   echo -e "\tphp81-pipeline"
   echo -e "Example\n\t./build.sh php-vapor php74 -p"
   exit
