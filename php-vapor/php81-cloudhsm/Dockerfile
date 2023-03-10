@@ -35,7 +35,7 @@ RUN set -eux; \
         @composer \
       ;
 
-RUN apt-get update -y && apt-get install -y wget
+RUN apt-get update -y && apt-get install -y wget git
 
 RUN wget -O /etc/ssl/cert.pem "https://curl.haxx.se/ca/cacert.pem" && \
     cp "/etc/ssl/cert.pem" /opt/cert.pem
