@@ -9,7 +9,8 @@ RUN pecl install pcov && \
 
 # Added for better RSA encryption/decryption
 RUN apk --update add gmp-dev && \
-    docker-php-ext-install gmp
+    docker-php-ext-install gmp && \
+    docker-php-ext-install calendar
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
