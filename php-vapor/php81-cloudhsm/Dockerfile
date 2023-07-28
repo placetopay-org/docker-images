@@ -32,6 +32,7 @@ RUN set -eux; \
         xsl \
         zip \
         gnupg \
+        gmp \
         @composer \
       ;
 
