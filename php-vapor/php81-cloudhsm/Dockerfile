@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-buster
+FROM --platform=linux/amd64 php:8.1-fpm-buster
 
 # Install `docker-php-ext-install` helper to ease installation of PHP
 # extensions
