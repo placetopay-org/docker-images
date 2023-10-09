@@ -47,14 +47,9 @@ RUN set -eux \
   && export NR_INSTALL_SILENT=1 \
   && /tmp/newrelic-php5-*/newrelic-install install
 
-ARG NEW_RELIC_LICENSE_KEY
-ARG NEW_RELIC_APPNAME
-
 RUN echo 'extension = "newrelic.so"' >> /usr/local/etc/php/php.ini
 RUN echo 'newrelic.logfile = "/dev/null"' >> /usr/local/etc/php/php.ini
 RUN echo 'newrelic.loglevel = "error"' >> /usr/local/etc/php/php.ini
-RUN echo 'newrelic.appname = "${NEW_RELIC_APPNAME}"' >> /usr/local/etc/php/php.ini
-RUN echo 'newrelic.licence = "${NEW_RELIC_LICENSE_KEY}"' >> /usr/local/etc/php/php.ini
 
 # Remove installation files
 RUN rm /usr/local/etc/php/conf.d/newrelic.ini
