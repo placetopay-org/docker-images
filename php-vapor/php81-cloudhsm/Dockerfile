@@ -38,6 +38,31 @@ RUN set -eux; \
 
 RUN apt-get update -y && apt-get install -y wget git
 
+# Download and install newrelic from: https://download.newrelic.com/php_agent/release/
+RUN set -eux \
+  && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" |  \
+    grep -o 'newrelic-php5.*\-linux-musl.tar.gz' |  sed -e 's/^.*>//;s/<[^>]*>//g'` || exit; \
+  curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_FILE}" | tar -C /tmp -zx \
+  && export NR_INSTALL_USE_CP_NOT_LN=1 \
+  && export NR_INSTALL_SILENT=1 \
+  && /tmp/newrelic-php5-*/newrelic-install install
+
+ARG NEW_RELIC_LICENSE_KEY
+ARG NEW_RELIC_APPNAME
+
+RUN echo 'extension = "newrelic.so"' >> /usr/local/etc/php/php.ini
+RUN echo 'newrelic.logfile = "/dev/null"' >> /usr/local/etc/php/php.ini
+RUN echo 'newrelic.loglevel = "error"' >> /usr/local/etc/php/php.ini
+RUN echo 'newrelic.appname = "${NEW_RELIC_APPNAME}"' >> /usr/local/etc/php/php.ini
+RUN echo 'newrelic.licence = "${NEW_RELIC_LICENSE_KEY}"' >> /usr/local/etc/php/php.ini
+
+# Remove installation files
+RUN rm /usr/local/etc/php/conf.d/newrelic.ini
+
+RUN mkdir -p /usr/local/etc/newrelic
+RUN echo "loglevel=error" > /usr/local/etc/newrelic/newrelic.cfg
+RUN echo "logfile=/dev/null" >> /usr/local/etc/php/php.ini
+
 RUN wget -O /etc/ssl/cert.pem "https://curl.haxx.se/ca/cacert.pem" && \
     cp "/etc/ssl/cert.pem" /opt/cert.pem
 
@@ -48,6 +73,8 @@ COPY ./runtime/php.ini /usr/local/etc/php/php.ini
 RUN chmod 755 /opt/bootstrap
 RUN chmod 755 /opt/bootstrap.php
 
-ENTRYPOINT []
+ADD entrypoint.sh /var/task/entrypoint.sh
 
-CMD /opt/bootstrap
+USER root
+RUN chmod +x /var/task/entrypoint.sh
+ENTRYPOINT ["/var/task/entrypoint.sh"]
