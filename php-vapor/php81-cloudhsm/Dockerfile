@@ -36,37 +36,30 @@ RUN set -eux; \
         @composer \
       ;
 
+COPY ./runtime/bootstrap /opt/bootstrap
+COPY ./runtime/bootstrap.php /opt/bootstrap.php
+COPY ./runtime/php.ini /usr/local/etc/php/php.ini
+COPY ./runtime/newrelic.cfg /usr/local/etc/newrelic/newrelic.cfg
+
+RUN chmod 755 /opt/bootstrap
+RUN chmod 755 /opt/bootstrap.php
+
 RUN apt-get update -y && apt-get install -y wget git
 
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
 RUN set -eux \
   && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" |  \
-    grep -o 'newrelic-php5.*\-linux-musl.tar.gz' |  sed -e 's/^.*>//;s/<[^>]*>//g'` || exit; \
-  curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_FILE}" | tar -C /tmp -zx \
-  && export NR_INSTALL_USE_CP_NOT_LN=1 \
-  && export NR_INSTALL_SILENT=1 \
-  && /tmp/newrelic-php5-*/newrelic-install install
-
-RUN echo 'extension = "newrelic.so"' >> /usr/local/etc/php/php.ini
-RUN echo 'newrelic.logfile = "/dev/null"' >> /usr/local/etc/php/php.ini
-RUN echo 'newrelic.loglevel = "error"' >> /usr/local/etc/php/php.ini
+    grep -o 'newrelic-php5.*\-linux.tar.gz' |  sed -e 's/^.*>//;s/<[^>]*>//g'` || exit; \
+    curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_FILE}" | tar -C /tmp -zx && \
+    export NR_INSTALL_USE_CP_NOT_LN=1 && \
+    export NR_INSTALL_SILENT=1 && \
+    /tmp/newrelic-php5-*/newrelic-install install
 
 # Remove installation files
 RUN rm /usr/local/etc/php/conf.d/newrelic.ini
 
-RUN mkdir -p /usr/local/etc/newrelic
-RUN echo "loglevel=error" > /usr/local/etc/newrelic/newrelic.cfg
-RUN echo "logfile=/dev/null" >> /usr/local/etc/php/php.ini
-
 RUN wget -O /etc/ssl/cert.pem "https://curl.haxx.se/ca/cacert.pem" && \
     cp "/etc/ssl/cert.pem" /opt/cert.pem
-
-COPY ./runtime/bootstrap /opt/bootstrap
-COPY ./runtime/bootstrap.php /opt/bootstrap.php
-COPY ./runtime/php.ini /usr/local/etc/php/php.ini
-
-RUN chmod 755 /opt/bootstrap
-RUN chmod 755 /opt/bootstrap.php
 
 ADD entrypoint.sh /var/task/entrypoint.sh
 
