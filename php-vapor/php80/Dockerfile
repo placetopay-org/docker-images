@@ -11,7 +11,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
 RUN set -eux \
-  && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" | grep -o 'newrelic-php5-\(\d\+.\)\+-linux-musl.tar.gz' | head -n 1` || exit; \
+  && NEWRELIC_FILE=`curl -s "https://download.newrelic.com/php_agent/release/" | grep -o 'newrelic-php5-\([0-9\.]\)\+-linux-musl.tar.gz' | head -n 1` || exit; \
   curl -L "https://download.newrelic.com/php_agent/release/${NEWRELIC_FILE}" | tar -C /tmp -zx \
   && export NR_INSTALL_USE_CP_NOT_LN=1 \
   && export NR_INSTALL_SILENT=1 \
