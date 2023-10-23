@@ -16,12 +16,19 @@ fi
 if [ -z "$PHP_VERSION" ]; then
   echo "Provide a version to build, options are:"
   echo -e "\tphp74"
+
   echo -e "\tphp80"
   echo -e "\tphp80-pipeline"
+
   echo -e "\tphp81"
   echo -e "\tphp81-cloudhsm"
   echo -e "\tphp81-pipeline"
+
+  echo -e "\tphp82"
   echo -e "\tphp82-pipeline"
+  echo -e "\tphp82-arm"
+  echo -e "\tphp82-arm-pipeline"
+
   echo -e "Example\n\t./build.sh php-vapor php74 -p"
   exit
 fi
@@ -31,7 +38,13 @@ if [ -z "$PUSH_TAG" ]; then
 fi
 
 echo "Running build for $PHP_VERSION"
-docker build -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
+
+# php82-pipeline needs an build argument for vapor image
+if [[ "$PHP_VERSION" == *"php82-arm"* ]]; then
+  docker build -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION} --build-arg __VAPOR_RUNTIME=docker-arm
+else
+  docker build -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
+fi
 
 if [ $? -ne 0 ]; then
   echo "We have error - build failed!"

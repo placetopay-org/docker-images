@@ -1,4 +1,4 @@
-FROM laravelphp/vapor:php82
+FROM laravelphp/vapor:php82-arm
 
 RUN apk del icu-data-en && apk add icu-data-full
 
