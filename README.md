@@ -36,3 +36,7 @@ __Note:__ You need to be logged in docker hub to publish with `docker login` in 
 
 - Laravel Vapor Dockerfiles - https://github.com/laravel/vapor-dockerfiles.
 - Integrate Newrelic in Laravel Vapor - https://dev.to/davidv99/integrate-newrelic-in-laravel-vapor-4o13.
+- Bref-deploy - https://github.com/placetopay-org/docker-images/blob/master/bref-deploy/README.md.
+- Code-check - https://github.com/placetopay-org/docker-images/blob/master/code-check/README.md.
+- MsTeams-notify - https://github.com/placetopay-org/docker-images/blob/master/msteams-notify/README.md.
+- Semantic-release - https://github.com/placetopay-org/docker-images/blob/master/semantic-release/README.md.

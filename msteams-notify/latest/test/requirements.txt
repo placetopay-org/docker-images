@@ -1,0 +1,6 @@
+bitbucket-pipes-toolkit==2.2.0
+pytest==6.1.2
+flake8==3.8.4
+python-dotenv==0.20.0
+keepachangelog==1.0.0
+markdownify

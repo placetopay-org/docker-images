@@ -1,0 +1,10 @@
+name: Code Check
+image: placetopay/code-check
+description: Check backend and frontend code efficiently
+repository: https://bitbucket.org/placetopay/code-check
+maintainer: miguel.lopez@evertecinc.com
+tags:
+    - php-cs-fixer
+    - bitbucket-pipelines
+    - pipes
+    - bash
