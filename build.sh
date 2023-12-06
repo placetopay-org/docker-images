@@ -41,9 +41,9 @@ echo "Running build for $PHP_VERSION"
 
 # php82-pipeline needs an build argument for vapor image
 if [[ "$PHP_VERSION" == *"php82-arm"* ]]; then
-  docker build -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION} --build-arg __VAPOR_RUNTIME=docker-arm
+  docker build --platform linux/amd64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION} --build-arg __VAPOR_RUNTIME=docker-arm
 else
-  docker build -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
+  docker build --platform linux/amd64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
 fi
 
 if [ $? -ne 0 ]; then
