@@ -34,8 +34,6 @@ RUN set -eux; \
         gnupg \
         gmp \
         @composer \
-        openssl \
-        sodium \
       ;
 
 COPY ./runtime/bootstrap /opt/bootstrap
