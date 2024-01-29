@@ -12,7 +12,7 @@ RUN set -eux; \
       chmod +x /usr/local/bin/install-php-extensions
 
 # Install common PHP extensions (using `install-php-extensions`)
-# (no need to install mbstring, pdo, tokenizer or xml as they are already part of base image)
+# (no need to install mbstring, pdo, sodium, openssl, tokenizer or xml as they are already part of base image)
 RUN set -eux; \
       install-php-extensions \
         bcmath \
