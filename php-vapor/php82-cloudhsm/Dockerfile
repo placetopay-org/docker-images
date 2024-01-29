@@ -4,7 +4,7 @@ FROM --platform=linux/amd64 php:8.2-fpm-buster
 # extensions
 #
 # Ref: https://github.com/mlocati/docker-php-extension-installer
-ENV PHP_EXT_INSTALLER_VERSION=1.5.52
+ENV PHP_EXT_INSTALLER_VERSION=2.1.80
 
 RUN set -eux; \
       curl --fail -Lo /usr/local/bin/install-php-extensions \
@@ -34,6 +34,8 @@ RUN set -eux; \
         gnupg \
         gmp \
         @composer \
+        openssl \
+        sodium \
       ;
 
 COPY ./runtime/bootstrap /opt/bootstrap
