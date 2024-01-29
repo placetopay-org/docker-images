@@ -1,0 +1,6 @@
+name: Semantic release
+image: placetopay/semantic-release
+repository: https://bitbucket.org/placetopay/semantic-release
+maintainer: carlos.jimenezpinzon@evertecinc.com
+tags:
+    - git

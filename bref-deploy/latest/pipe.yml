@@ -1,0 +1,9 @@
+name: Bref deploy
+image: roobertjdev09/bref-deploy
+repository: https://bitbucket.org/placetopay/bref-deploy
+maintainer: carlos.jimenezpinzon@evertecinc.com
+tags:
+    - bref
+    - deploy
+    - laravel
+    - php

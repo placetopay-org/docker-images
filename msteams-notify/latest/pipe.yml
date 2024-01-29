@@ -1,0 +1,14 @@
+name: MSTeams Notify
+image: placetopay/msteams-notify:2.0.0
+description: Send a notification to MS Teams.
+category: Notifications
+repository: https://bitbucket.org/placetopay/msteams-notify/src/main/
+vendor:
+  name: MSTeams
+  website: https://www.microsoft.com/es-co/microsoft-teams/
+maintainer:
+  name: Test
+  website: Test
+tags:
+  - notification
+  - msteams
