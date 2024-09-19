@@ -29,6 +29,9 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp82-arm"
   echo -e "\tphp82-arm-pipeline"
 
+  echo -e "\tphp83"
+  echo -e "\tphp83-pipeline"
+
   echo -e "Example\n\t./build.sh php-vapor php74 -p"
   exit
 fi
