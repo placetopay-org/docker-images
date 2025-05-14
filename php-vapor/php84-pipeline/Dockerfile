@@ -23,12 +23,15 @@ RUN apk --update add \
     gettext-dev \
     libxslt-dev \
     libgcrypt-dev \
-    linux-headers && \
-    rm /var/cache/apk/*
+    linux-headers \
+    && rm -rf /var/cache/apk/*
+
 
 RUN pecl channel-update pecl.php.net && \
-    pecl install mcrypt redis-6.0.1 && \
+    pecl install mcrypt redis && \
+    docker-php-ext-enable redis && \
     rm -rf /tmp/pear
+
 
 RUN docker-php-ext-install \
     mysqli \
