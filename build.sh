@@ -32,6 +32,8 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp83"
   echo -e "\tphp83-pipeline"
 
+    echo -e "\tphp84"
+    echo -e "\tphp84-pipeline"
     echo -e "\tphp84-arm"
     echo -e "\tphp84-arm-pipeline"
 
