@@ -32,6 +32,11 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp83"
   echo -e "\tphp83-pipeline"
 
+    echo -e "\tphp84"
+    echo -e "\tphp84-pipeline"
+    echo -e "\tphp84-arm"
+    echo -e "\tphp84-arm-pipeline"
+
   echo -e "Example\n\t./build.sh php-vapor php74 -p"
   exit
 fi
@@ -43,7 +48,7 @@ fi
 echo "Running build for $PHP_VERSION"
 
 # php82-pipeline needs an build argument for vapor image
-if [[ "$PHP_VERSION" == *"php82-arm"* ]]; then
+if [[ "$PHP_VERSION" == *"php82-arm"* || "$PHP_VERSION" == *"php84-arm"*]]; then
   docker build --platform linux/amd64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION} --build-arg __VAPOR_RUNTIME=docker-arm
 else
   docker build --platform linux/amd64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
