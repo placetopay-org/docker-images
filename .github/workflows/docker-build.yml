@@ -2,6 +2,25 @@ name: run build.sh
 
 on:
   workflow_dispatch:   # Only runs when triggered manually from GitHub UI
+    inputs:
+        php_version:
+          description: 'PHP vapor version to build'
+          required: true
+          default: 'php84'
+          type: choice
+          options:
+            - php82
+            - php82-pipeline
+            - php82-arm
+            - php82-arm-pipeline
+            - php83
+            - php83-pipeline
+            - php83-arm
+            - php83-arm-pipeline
+            - php84
+            - php84-pipeline
+            - php84-arm 
+            - php84-arm-pipeline
 
 jobs:
   build-and-push:
@@ -17,11 +36,11 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Make build.sh executable
         run: chmod +x ./build.sh
 
-      - name: Build and push php84 image
-        run: ./build.sh php-vapor php84
+      - name: Build and push php-vapor image
+        run: ./build.sh php-vapor ${{ github.event.inputs.php_version }} -p
