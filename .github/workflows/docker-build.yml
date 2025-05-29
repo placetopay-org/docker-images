@@ -9,17 +9,21 @@ on:
           default: 'php84'
           type: choice
           options:
+            - php81
+            - php81-cloudhsm
+            - php81-pipeline
             - php82
             - php82-pipeline
             - php82-arm
             - php82-arm-pipeline
+            - php82-cloudhsm
             - php83
             - php83-pipeline
             - php83-arm
             - php83-arm-pipeline
             - php84
             - php84-pipeline
-            - php84-arm 
+            - php84-arm
             - php84-arm-pipeline
 
 jobs:
