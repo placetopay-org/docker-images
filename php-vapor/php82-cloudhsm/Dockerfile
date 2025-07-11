@@ -1,10 +1,10 @@
-FROM --platform=linux/amd64 php:8.2-fpm-buster
+FROM --platform=linux/amd64 php:8.2-fpm-bullseye
 
 # Install `docker-php-ext-install` helper to ease installation of PHP
 # extensions
 #
 # Ref: https://github.com/mlocati/docker-php-extension-installer
-ENV PHP_EXT_INSTALLER_VERSION=2.1.80
+ENV PHP_EXT_INSTALLER_VERSION=2.8.5
 
 RUN set -eux; \
       curl --fail -Lo /usr/local/bin/install-php-extensions \
