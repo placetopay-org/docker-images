@@ -25,6 +25,7 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp81-pipeline"
 
   echo -e "\tphp82"
+  echo -e "\tphp82-cloudhsm"
   echo -e "\tphp82-pipeline"
   echo -e "\tphp82-arm"
   echo -e "\tphp82-arm-pipeline"
