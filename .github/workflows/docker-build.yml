@@ -25,6 +25,7 @@ on:
             - php84-pipeline
             - php84-arm
             - php84-arm-pipeline
+            - php84-cloudhsm
 
 jobs:
   build-and-push:
