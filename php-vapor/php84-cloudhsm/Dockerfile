@@ -1,10 +1,10 @@
-FROM --platform=linux/amd64 php:8.2-fpm-bullseye
+FROM --platform=linux/amd64 php:8.4-fpm-bullseye
 
 # Install `docker-php-ext-install` helper to ease installation of PHP
 # extensions
 #
 # Ref: https://github.com/mlocati/docker-php-extension-installer
-ENV PHP_EXT_INSTALLER_VERSION=2.8.5
+ENV PHP_EXT_INSTALLER_VERSION=2.9.20
 
 RUN set -eux; \
       curl --fail -Lo /usr/local/bin/install-php-extensions \
@@ -33,6 +33,7 @@ RUN set -eux; \
         zip \
         gnupg \
         gmp \
+        ftp \
         @composer \
       ;
 
@@ -44,7 +45,7 @@ COPY ./runtime/newrelic.cfg /usr/local/etc/newrelic/newrelic.cfg
 RUN chmod 755 /opt/bootstrap
 RUN chmod 755 /opt/bootstrap.php
 
-RUN apt-get update -y && apt-get install -y wget git
+RUN apt-get update -y && apt-get install -y wget git openjdk-17-jre-headless
 
 # Download and install newrelic from: https://download.newrelic.com/php_agent/release/
 RUN set -eux \

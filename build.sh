@@ -25,6 +25,7 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp81-pipeline"
 
   echo -e "\tphp82"
+  echo -e "\tphp82-cloudhsm"
   echo -e "\tphp82-pipeline"
   echo -e "\tphp82-arm"
   echo -e "\tphp82-arm-pipeline"
@@ -32,10 +33,11 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp83"
   echo -e "\tphp83-pipeline"
 
-    echo -e "\tphp84"
-    echo -e "\tphp84-pipeline"
-    echo -e "\tphp84-arm"
-    echo -e "\tphp84-arm-pipeline"
+  echo -e "\tphp84"
+  echo -e "\tphp84-cloudhsm"
+  echo -e "\tphp84-pipeline"
+  echo -e "\tphp84-arm"
+  echo -e "\tphp84-arm-pipeline"
 
   echo -e "Example\n\t./build.sh php-vapor php74 -p"
   exit
