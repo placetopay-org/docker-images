@@ -27,7 +27,7 @@ RUN apk --update add \
     rm /var/cache/apk/*
 
 RUN pecl channel-update pecl.php.net && \
-    pecl install redis-6.1.0 && \
+    pecl install redis-6.3.0 && \
     rm -rf /tmp/pear
 
 RUN docker-php-ext-install \
