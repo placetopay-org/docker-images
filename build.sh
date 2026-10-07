@@ -1,19 +1,20 @@
 #!/bin/bash
 
-PHP_IMAGE=$1
-PHP_VERSION=$2
+BUILD_NAME=$1
+BUILD_VERSION=$2
 PUSH=$3
 PUSH_TAG=$4
 
-if [ -z "$PHP_IMAGE" ]; then
+if [ -z "$BUILD_NAME" ]; then
   echo "Provide an image to build, options are:"
   echo -e "\tphp-vapor"
   echo -e "\tphp-image"
+  echo -e "\tmysql"
   echo -e "Example\n\t./build.sh php-vapor php74 -p"
   exit
 fi
 
-if [ -z "$PHP_VERSION" ]; then
+if [ -z "$BUILD_VERSION" ]; then
   echo "Provide a version to build, options are:"
   echo -e "\tphp74"
 
@@ -47,27 +48,25 @@ if [ -z "$PHP_VERSION" ]; then
 fi
 
 if [ -z "$PUSH_TAG" ]; then
-  PUSH_TAG=$PHP_VERSION
+  PUSH_TAG=$BUILD_VERSION
 fi
 
-echo "Running build for $PHP_VERSION"
+echo "Running build for placetopay/${BUILD_NAME}:$BUILD_VERSION"
 
 # php82-pipeline needs an build argument for vapor image
-if [[ "$PHP_VERSION" == *"php82-arm"* ]] || [[ "$PHP_VERSION" == *"php84-arm"* ]]; then
-  docker build --platform linux/amd64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION} --build-arg __VAPOR_RUNTIME=docker-arm
+if [[ "$BUILD_VERSION" == *"php82-arm"* ]] || [[ "$BUILD_VERSION" == *"php84-arm"* ]]; then
+  docker build --platform linux/amd64 -t placetopay/${BUILD_NAME}:${BUILD_VERSION} ${BUILD_NAME}/${BUILD_VERSION} --build-arg __VAPOR_RUNTIME=docker-arm
 else
-  docker build --platform linux/amd64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
+  docker build -t placetopay/${BUILD_NAME}:${BUILD_VERSION} ${BUILD_NAME}/${BUILD_VERSION}
+#  docker build --platform linux/amd64 -t placetopay/${BUILD_NAME}:${BUILD_VERSION} ${BUILD_NAME}/${BUILD_VERSION}
 fi
 
 if [ $? -ne 0 ]; then
-  echo "We have error - build failed!"
+  echo "We have an error - build failed!"
   exit $?
 fi
 
-echo "Tagging the version as latest"
-docker tag ${PHP_IMAGE}-${PHP_VERSION}:latest placetopay/${PHP_IMAGE}:${PUSH_TAG}
-
 if [[ ! -z "$PUSH" ]]; then
   echo "Pushing image to DockerHub"
-  docker push placetopay/${PHP_IMAGE}:${PUSH_TAG}
+  docker push placetopay/${BUILD_NAME}:${PUSH_TAG}
 fi

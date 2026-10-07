@@ -1,0 +1,66 @@
+{
+	{$CADDY_GLOBAL_OPTIONS}
+
+	admin {$CADDY_SERVER_ADMIN_HOST}:{$CADDY_SERVER_ADMIN_PORT}
+	default_sni {$DOMAIN_NAME}
+
+	# Sin esto el arranque se cuelga instalando el CA en el trust store del contenedor
+	skip_install_trust
+
+	frankenphp {
+		worker {
+			file "{$APP_PUBLIC_PATH}/frankenphp-worker.php"
+			{$CADDY_SERVER_WORKER_DIRECTIVE}
+			{$CADDY_SERVER_WATCH_DIRECTIVES}
+		}
+	}
+
+	log {
+		level INFO
+		output stderr
+		format json
+	}
+
+	servers {
+		protocols h1 h2
+	}
+}
+
+{$CADDY_EXTRA_CONFIG}
+
+# catch-all por IP / sin SNI (healthcheck del ALB): responde /health sin tocar PHP
+:443 {
+	@healthcheck path /health
+	respond @healthcheck "OK" 200
+
+	log
+	@skip_logs path /health
+	log_skip @skip_logs
+
+	header {
+		-Server
+		-X-Powered-By
+	}
+}
+
+# sitio real; el cert self-signed lo genera Caddy (tls internal)
+{$DOMAIN_NAME} {
+	tls internal
+
+	log
+
+	root * {$APP_PUBLIC_PATH}
+	encode zstd br gzip
+
+	header {
+		-Server
+		-X-Powered-By
+	}
+
+	{$CADDY_SERVER_EXTRA_DIRECTIVES}
+
+	php_server {
+		index frankenphp-worker.php
+		resolve_root_symlink
+	}
+}
