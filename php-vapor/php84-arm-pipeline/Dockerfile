@@ -1,5 +1,7 @@
 FROM --platform=linux/arm64 php:8.4-fpm-alpine
 
+RUN apk upgrade --no-cache
+
 ONBUILD ARG __VAPOR_RUNTIME=
 ONBUILD RUN if [ -z "$__VAPOR_RUNTIME" ] ; then \
     echo "No runtime provided. Please upgrade to the latest version of laravel/vapor-cli." ; \
