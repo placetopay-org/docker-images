@@ -24,6 +24,7 @@ RUN set -eux \
 RUN echo 'extension = "newrelic.so"' >> /usr/local/etc/php/php.ini
 RUN echo 'newrelic.logfile = "/dev/null"' >> /usr/local/etc/php/php.ini
 RUN echo 'newrelic.loglevel = "error"' >> /usr/local/etc/php/php.ini
+RUN echo 'session.upload_progress.enabled=0' >> /usr/local/etc/php/php.ini
 
 # Remove installation files
 RUN rm /usr/local/etc/php/conf.d/newrelic.ini

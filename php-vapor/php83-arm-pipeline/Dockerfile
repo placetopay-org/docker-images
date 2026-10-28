@@ -19,4 +19,6 @@ RUN apk add gnupg1 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/commu
 
 RUN /bin/sh -c set -eux;  printf "[client]\nprotocol=tcp" > /etc/my.cnf # buildkit
 
+RUN echo 'session.upload_progress.enabled=0' >> /usr/local/etc/php/php.ini
+
 COPY . /var/task

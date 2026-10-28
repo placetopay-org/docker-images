@@ -1,5 +1,7 @@
 FROM --platform=linux/amd64 php:8.4-fpm-alpine
 
+RUN apk upgrade --no-cache
+
 RUN apk --update add \
     wget \
     curl \
