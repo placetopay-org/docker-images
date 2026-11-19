@@ -27,8 +27,6 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp82"
   echo -e "\tphp82-cloudhsm"
   echo -e "\tphp82-pipeline"
-  echo -e "\tphp82-arm"
-  echo -e "\tphp82-arm-pipeline"
 
   echo -e "\tphp83"
   echo -e "\tphp83-pipeline"
@@ -36,8 +34,6 @@ if [ -z "$PHP_VERSION" ]; then
   echo -e "\tphp84"
   echo -e "\tphp84-cloudhsm"
   echo -e "\tphp84-pipeline"
-  echo -e "\tphp84-arm"
-  echo -e "\tphp84-arm-pipeline"
 
   echo -e "\tphp85"
   echo -e "\tphp85-pipeline"
@@ -52,12 +48,7 @@ fi
 
 echo "Running build for $PHP_VERSION"
 
-# arm images must be built for arm64 and need the vapor runtime build argument
-if [[ "$PHP_VERSION" == *"-arm"* ]]; then
-  docker build --platform linux/arm64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION} --build-arg __VAPOR_RUNTIME=docker-arm
-else
-  docker build --platform linux/amd64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
-fi
+docker build --platform linux/amd64 -t ${PHP_IMAGE}-${PHP_VERSION}:latest ${PHP_IMAGE}/${PHP_VERSION}
 
 BUILD_STATUS=$?
 if [ $BUILD_STATUS -ne 0 ]; then
