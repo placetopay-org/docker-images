@@ -1,0 +1,71 @@
+name: build check
+
+# Builds the images touched by a pull request, without logging in or pushing.
+on:
+  pull_request:
+    paths:
+      - 'php-vapor/**'
+      - 'php-image/**'
+      - 'build.sh'
+      - '.github/workflows/docker-build*.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      images: ${{ steps.changed.outputs.images }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find images to build
+        id: changed
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          files=$(git diff --name-only "$BASE_SHA...$HEAD_SHA")
+
+          # Image folders changed directly, e.g. php-vapor/php85/Dockerfile -> php-vapor php85
+          images=$(echo "$files" | grep -E '^(php-vapor|php-image)/[^/]+/' | cut -d/ -f1,2 | sort -u)
+
+          # A change to the build tooling affects every image, so build one amd64 and one arm64 image as a smoke test
+          if echo "$files" | grep -qE '^(build\.sh|\.github/workflows/docker-build.*\.yml)$'; then
+            images=$(printf '%s\nphp-vapor/php85\nphp-vapor/php84-arm\n' "$images" | sed '/^$/d' | sort -u)
+          fi
+
+          # Skip folders that no longer exist (deleted in the PR)
+          json=$(for i in $images; do [ -f "$i/Dockerfile" ] && echo "$i"; done | jq -R . | jq -sc .)
+          echo "Images to build: $json"
+          echo "images=$json" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: detect
+    if: needs.detect.outputs.images != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJson(needs.detect.outputs.images) }}
+    name: build ${{ matrix.image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image (no push)
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: |
+          chmod +x ./build.sh
+          ./build.sh "${IMAGE%%/*}" "${IMAGE#*/}"
