@@ -14,17 +14,11 @@ on:
             - php81-pipeline
             - php82
             - php82-pipeline
-            - php82-arm
-            - php82-arm-pipeline
             - php82-cloudhsm
             - php83
             - php83-pipeline
-            - php83-arm
-            - php83-arm-pipeline
             - php84
             - php84-pipeline
-            - php84-arm
-            - php84-arm-pipeline
             - php84-cloudhsm
             - php85
             - php85-pipeline
@@ -36,9 +30,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

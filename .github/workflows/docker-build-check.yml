@@ -32,7 +32,8 @@ jobs:
           files=$(git diff --name-only "$BASE_SHA...$HEAD_SHA")
 
           # Image folders changed directly, e.g. php-vapor/php85/Dockerfile -> php-vapor php85
-          images=$(echo "$files" | grep -E '^(php-vapor|php-image)/[^/]+/' | cut -d/ -f1,2 | sort -u)
+          # -arm images are skipped: they are not used and can't be built on amd64 runners
+          images=$(echo "$files" | grep -E '^(php-vapor|php-image)/[^/]+/' | cut -d/ -f1,2 | grep -v -- '-arm' | sort -u)
 
           # A change to the build tooling affects every image, so build php85 as a smoke test
           if echo "$files" | grep -qE '^(build\.sh|\.github/workflows/docker-build.*\.yml)$'; then
@@ -56,9 +57,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
