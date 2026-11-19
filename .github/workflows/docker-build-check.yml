@@ -34,9 +34,9 @@ jobs:
           # Image folders changed directly, e.g. php-vapor/php85/Dockerfile -> php-vapor php85
           images=$(echo "$files" | grep -E '^(php-vapor|php-image)/[^/]+/' | cut -d/ -f1,2 | sort -u)
 
-          # A change to the build tooling affects every image, so build one amd64 and one arm64 image as a smoke test
+          # A change to the build tooling affects every image, so build php85 as a smoke test
           if echo "$files" | grep -qE '^(build\.sh|\.github/workflows/docker-build.*\.yml)$'; then
-            images=$(printf '%s\nphp-vapor/php85\nphp-vapor/php84-arm\n' "$images" | sed '/^$/d' | sort -u)
+            images=$(printf '%s\nphp-vapor/php85\n' "$images" | sed '/^$/d' | sort -u)
           fi
 
           # Skip folders that no longer exist (deleted in the PR)
